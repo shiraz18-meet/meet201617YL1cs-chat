@@ -1,18 +1,43 @@
 #2016-2017 PERSONAL PROJECTS: TurtleChat!
-#WRITE YOUR NAME HERE!
+#Shira Zuker
 
 #####################################################################################
 #                                   IMPORTS                                         #
 #####################################################################################
 #import the turtle module
+import turtle
 #import the Client class from the turtle_chat_client module
+from turtle_chat_client import Client
 #Finally, from the turtle_chat_widgets module, import two classes: Button and TextInput
+from turtle_chat_widgets import Button , TextInput
 #####################################################################################
 #####################################################################################
 
 #####################################################################################
 #                                   TextBox                                         #
 #####################################################################################
+class TextBox(TextInput):
+
+    def draw_box(self):
+        turtle.hideturtle()
+        self.writer.hideturtle()
+        self.writer.penup()
+        self.writer.goto(self.pos)
+        self.writer.pendown()
+        self.writer.goto(self.width,-200)
+        self.writer.goto(self.width,self.height)
+        self.writer.goto(-200,self.height)
+        self.writer.goto(self.pos)
+
+    def write_msg(self):
+        self.writer.goto(-self.width/2+10+self.pos[0],self.pos[1]-self.height/2+20)
+        self.writer.pendown()
+        self,writer.clear.()
+        self.writer.write(self.get_msg())
+        
+
+    
+
 #Make a class called TextBox, which will be a subclass of TextInput.
 #Because TextInput is an abstract class, you must implement its abstract
 #methods.  There are two:
@@ -41,6 +66,13 @@
 #####################################################################################
 #                                  SendButton                                       #
 #####################################################################################
+class SendButton(Button):
+
+    def __init__(self,view,my_turtle=None,shape=None,pos=(0,0)):
+
+    def fun(self):
+        self.username.send(_msg)
+        
 #Make a class called SendButton, which will be a subclass of Button.
 #Button is an abstract class with one abstract method: fun.
 #fun gets called whenever the button is clicked.  It's jobs will be to
