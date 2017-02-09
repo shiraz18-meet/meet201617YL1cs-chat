@@ -9,7 +9,8 @@ import turtle
 #import the Client class from the turtle_chat_client module
 from turtle_chat_client import Client
 #Finally, from the turtle_chat_widgets module, import two classes: Button and TextInput
-from turtle_chat_widgets import Button , TextInput
+from turtle_chat_widgets import Button
+from turtle_chat_widgets import TextInput
 #####################################################################################
 #####################################################################################
 
@@ -19,19 +20,22 @@ from turtle_chat_widgets import Button , TextInput
 class TextBox(TextInput):
 
     def draw_box(self):
+        self.pos= (-145,-200)
+        self.height=5
+        self.width=150
         turtle.hideturtle()
         self.writer.hideturtle()
         self.writer.penup()
         self.writer.goto(self.pos)
         self.writer.pendown()
         self.writer.goto(self.width,-200)
-        self.writer.goto(self.width,self.height)
-        self.writer.goto(-200,self.height)
+        self.writer.goto(self.width,self.height-35)
+        self.writer.goto(-145,self.height-35)
         self.writer.goto(self.pos)
 
     def write_msg(self):
         self.writer.penup()
-        self.writer.goto(-180,80)
+        self.writer.goto(-130,-55)
         self.writer.clear()
         self.writer.write(self.new_msg)
         
@@ -82,7 +86,7 @@ class SendButton(Button):
 
         if shape is None:
             self.turtle.shape('square')
-            self.turtle.shapesize(2,10)
+            self.turtle.shapesize(2,6)
         else:
             turtle.addshape(shape)
             self.turtle.shape(shape)
@@ -94,7 +98,7 @@ class SendButton(Button):
     def fun(self,x=0,y=0):
         #self.username.send(self.view)
         #self.username.send(self.textbox)
-        self.username.send(self.new_msg)
+        self.view.send_msg()
         
 #Make a class called SendButton, which will be a subclass of Button.
 #Button is an abstract class with one abstract method: fun.
@@ -139,12 +143,15 @@ class View:
 
         ###
         #Store the username and partner_name into the instance.
+        self.partner_name=partner_name
+        self.username=username
         ###
 
         ###
         #Make a new client object and store it in this instance of View
         #(i.e. self).  The name of the instance should be my_client
-        ###
+        #
+        turtle.setup(width=400, height=600, startx=None, starty=None)
 
         ###
         #Set screen dimensions using turtle.setup
@@ -206,7 +213,10 @@ class View:
         It should call self.display_msg() to cause the message
         display to be updated.
         '''
-        pass
+        self.my_client.send(self.textbox.new_msg)
+        self.msg_queue.insert(0,self.textbox.new_msg)
+        self.display_msg()
+        self.textbox.clear_msg()
 
     def get_msg(self):
         return self.textbox.get_msg()
@@ -223,8 +233,9 @@ class View:
         where send_btn is the name of your button instance
 
         Then, it can call turtle.listen()
+        
         '''
-        pass
+        turtle.listen()
 
     def msg_received(self,msg):
         '''
@@ -249,7 +260,7 @@ class View:
         You can get the messages you want from self.msg_queue
         '''
         for i in range(4):
-            self.msg_queue_turtle[i].clear()
+            self.msg_queue_turtles[i].clear()
         for t in range(4):
             self.msg_queue_turtles[t].write(self.msg_queue[t])
 
